@@ -6,7 +6,7 @@ Generate simple image galleries.
 
 ## Usage
 
-Create new gallery
+### Create new gallery
 ```bash
 picweaver new_project $project_name
 ```
@@ -21,7 +21,7 @@ static/about.html => The $CONTENT of the homepage. This also contains the placeh
 entries/ => contains gallery entries.
 
 
-Create new gallery entry
+### Create new gallery entry
 ```bash
 picweaver new_entry $entry_name
 ```
@@ -33,7 +33,7 @@ content.html is the gallery entry itself. It contains a placeholder $CONTENT whi
 
 images/ contains all the images for that entry. Just dump them all in that directory and the generator function will insert them accordingly.
 
-Generate site
+### Generate site
 ```bash
 picweaver generate
 ```
