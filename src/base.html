@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>$TITLE</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <style>
+		.gallery {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust minimum size as needed */
+			gap: 10px;
+			width: 100%; /* Ensure the gallery container takes full width */
+		}
+
+		/* Style for each image */
+		.gallery img {
+			width: 100%; /* Make the image fill its grid cell */
+			height: auto; /* Maintain aspect ratio */
+			aspect-ratio: 1 / 1; /* Ensure the image maintains a square aspect ratio */
+			object-fit: cover; /* Ensure the image covers the entire grid cell */
+			display: block; /* Remove any extra space below the image */
+		}
+        </style>
+</head>
+<body>
+        $TITLE
+        <br>
+        $CONTENT
+</body>
+</html>
