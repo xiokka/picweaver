@@ -132,12 +132,17 @@ pub fn generate_tag_pages(base_html: &str, tags_map: &BTreeMap<String, Vec<PathB
         create_directories(&tag_dir)?;
 
         let mut tag_content = String::new();
-        for path in paths {
-            let entry_title = path.file_name().unwrap().to_str().unwrap_or("Untitled");
-            let entry_link = format!("<a href=\"../entries/{}/index.html\">{}</a><br>", entry_title, entry_title);
-            tag_content.push_str(&entry_link);
-        }
 
+	tag_content.push_str("<div class=\"gallery\">\n");
+
+	for path in paths {
+	    if let Some(file_name) = path.file_name() {
+	        let file_name_str = file_name.to_string_lossy(); // Convert the file name to a string
+	        let entry_link = generate_gallery_content_tags(&file_name_str)?;
+	        tag_content.push_str(&entry_link);
+	    }
+	}
+	tag_content.push_str("</div>\n");
         let tag_html_content = replace_placeholders(
             &base_html,
             &[
@@ -230,6 +235,40 @@ fn generate_gallery_content(entry_name: &str) -> io::Result<String> {
         }
     }
     html_content.push_str("</div>\n");
+    Ok(html_content)
+}
+
+// Generate gallery content for the tag directory
+fn generate_gallery_content_tags(entry_name: &str) -> io::Result<String> {
+    let images_dir = Path::new("entries").join(entry_name).join("images");
+
+    if !images_dir.exists() {
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "The 'images' directory does not exist.",
+        ));
+    }
+
+    let mut image_paths = fs::read_dir(images_dir)?
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .filter(|path| path.is_file())
+        .collect::<Vec<_>>();
+
+    image_paths.sort_by_key(|path| path.file_name().unwrap_or_default().to_string_lossy().to_string());
+
+	let mut html_content = String::new();
+	for image_path in image_paths {
+		if let Some(file_name) = image_path.file_name() {
+			let file_name = file_name.to_string_lossy();
+			let image_path_str = image_path.to_string_lossy(); // Convert path to string
+	
+			html_content.push_str(&format!(
+				"<a href=\"../{}\" target=\"_blank\">\n <img src=\"../{}\" alt=\"{}\">\n</a>",
+				image_path_str, image_path_str, file_name
+			));
+		}
+	}
     Ok(html_content)
 }
 
