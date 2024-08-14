@@ -325,7 +325,7 @@ pub fn generate_site() -> io::Result<()> {
 
     // Create navigation cloud. Contains links to each tag index
     let nav_cloud = tags_map.keys()
-        .map(|tag| format!("<a href=\"{}/index.html\">{}</a>", tag, tag))
+        .map(|tag| format!("<a href=\"{}/index.html\">{}</a> ", tag, tag))
         .collect::<String>();
 
     // Replace the $NAVCLOUD placeholder in about_txt_content with tags
